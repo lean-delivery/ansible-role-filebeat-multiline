@@ -3,4 +3,4 @@
   hosts:
     - filebeat
   roles:
-    - filebeat-multiline
+    - ansible-role-filebeat-multiline
