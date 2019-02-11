@@ -1,15 +1,15 @@
 # general settings
 path:
-{{ path | to_nice_yaml | indent(2, true) }}
+{{ path | to_nice_yaml | indent(2, True) }}
 
 filebeat:
   registry_file: registry_in
   config:
     {{ filebeat_inputs_name }}: 
-      enabled: true
+      enabled: True
       path: inputs.d/*.yml
       reload:
-        enabled: true
+        enabled: True
         period: 10s
 
 # output settings

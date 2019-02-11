@@ -1,7 +1,7 @@
 ---
-- name: Set ELASTIC_BRANCH from version
+- name: Set elastic_branch from version
   set_fact:
-    ELASTIC_BRANCH: "{{ filebeat_version.split('.')[0] }}"
+    elastic_branch: "{{ filebeat_version.split('.')[0] }}"
     filebeat_version_suffix: "{{ filebeat_version.split('.')[1] }}"
 
 - name: Set filebeat_specific_version if specified

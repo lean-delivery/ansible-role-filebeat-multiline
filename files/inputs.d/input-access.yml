@@ -1,9 +1,9 @@
 ---
 - type: log
-  enabled: true
+  enabled: True
   paths:
     - /var/log/access*.log
   fields:
     logtype: access
     index_name: apache
-  fields_under_root: true
+  fields_under_root: True

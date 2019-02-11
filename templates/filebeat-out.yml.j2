@@ -2,11 +2,11 @@ filebeat:
   registry_file: registry_out
   {{ filebeat_inputs_name }}:
     - {{ filebeat_inputs_type }}: stdin
-      enabled: true
-      fields_under_root: true
+      enabled: True
+      fields_under_root: True
 {% if filebeat_custom_fields is defined %}
       fields:
-{{ filebeat_custom_fields | to_nice_yaml | indent(8, true) }}
+{{ filebeat_custom_fields | to_nice_yaml | indent(8, True) }}
 {% endif %}
 
 name: "{{ filebeat_node_name }}"
@@ -16,18 +16,18 @@ tags: [ "{{ '","'.join(tags) }}" ]
 
 # General settings
 json:
-  keys_under_root: true
-  overwrite_keys: true
-  add_error_key: true
+  keys_under_root: True
+  overwrite_keys: True
+  add_error_key: True
   message_key: message
 
 processors:
  - decode_json_fields:
      fields: ["message"]
-     process_array: true
+     process_array: True
      max_depth: 3
      target: ""
-     overwrite_keys: true
+     overwrite_keys: True
 
 path:
   config: {{ path.config }}
@@ -38,7 +38,7 @@ setup.template:
 
 # Output settings
 output.{{ filebeat_output }}:
-  enabled: true
+  enabled: True
   hosts: ["{{ elasticsearch.host }}"]
   port: {{ elasticsearch.port }}
 {% if filebeat_output != "elasticsearch" %}
@@ -50,7 +50,7 @@ output.{{ filebeat_output }}:
   bulk_max_size: 500
 {% if filebeat_ssl_enabled %}
   ssl:
-{{ ssl | to_nice_yaml | indent(4, true) }}
+{{ ssl | to_nice_yaml | indent(4, True) }}
 {% endif %}
 
 # Logging settings
