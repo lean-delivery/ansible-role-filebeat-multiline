@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Filebeat multiline
 =========
 [![build status](https://git.epam.com/dip-roles/filebeat-multiline/badges/master/build.svg)](https://git.epam.com/dip-roles/filebeat-multiline/pipelines)
@@ -231,3 +232,7 @@ Proprietary, property of EPAM Systems
 ## Author Information
 
 DEP Infrastructure Framework Project Team <specialepm-ldidevops@epam.com>
+=======
+# ansible-role-filebeat-multiline
+Ansible role to install filebeat-multiline with AWK parsers
+>>>>>>> dafcc69f5b787b4dc9612adcc625f5870042dcc9
