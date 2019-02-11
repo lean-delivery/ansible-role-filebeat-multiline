@@ -163,7 +163,7 @@ Playbook for installing on Linux client (use it as an example only!):
           index_name: hybris-console
   roles:
      - role: ca-cert
-     - role: filebeat-multiline
+     - role: ansible-role-filebeat-multiline
 ```
 
 Playbook for installing filebeat-multiline flow on Windows client (use it as an example only!):
@@ -184,7 +184,7 @@ Playbook for installing filebeat-multiline flow on Windows client (use it as an 
           logtype: hybris
           index_name: hybris-console
   roles:
-     - role: filebeat-multiline
+     - role: ansible-role-filebeat-multiline
 ```
 
 For example, such logs as general java application logs with multiline and stacktraces can be processed by `java` type of current service. 

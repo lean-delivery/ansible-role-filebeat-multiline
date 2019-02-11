@@ -10,9 +10,10 @@
 
 - name: Install ca- roles on target host
   hosts:
-    - filebeat-multiline
+    - ansible-role-filebeat-multiline
+
   vars:
-    CA_GROUP: filebeat-multiline
+    CA_GROUP: ansible-role-filebeat-multiline
   roles:
     - ca-root
     - ca-cert
