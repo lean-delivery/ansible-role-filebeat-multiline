@@ -1,5 +1,5 @@
 ---
-- name: Converge
+- name: Install filebeat on target host
   hosts: all
   roles:
-    - role: ansible-role-ansible-role-filebeat-multiline
+    - role: ansible-role-filebeat-multiline
