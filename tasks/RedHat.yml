@@ -135,12 +135,12 @@
     mode: 0644
   # with_fileglob:
   #   - ../templates/parsers.d/*.awk.j2
-    loop:
-      - parsing_access.awk
-      - parsing_hybris.awk
-      - parsing_java.awk
-      - parsing_solr.awk
-      - parsing_weblogic.awk
+  loop:
+    - parsing_access.awk
+    - parsing_hybris.awk
+    - parsing_java.awk
+    - parsing_solr.awk
+    - parsing_weblogic.awk
   loop_control:
     loop_var: parser_file
 
