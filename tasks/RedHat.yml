@@ -133,8 +133,14 @@
     owner: root
     group: root
     mode: 0644
-  with_fileglob:
-    - ../templates/parsers.d/*.awk
+  # with_fileglob:
+  #   - ../templates/parsers.d/*.awk.j2
+    loop:
+      - parsing_access.awk
+      - parsing_hybris.awk
+      - parsing_java.awk
+      - parsing_solr.awk
+      - parsing_weblogic.awk
   loop_control:
     loop_var: parser_file
 
@@ -179,7 +185,7 @@
     loop_var: fb_input
   when: filebeat_inputs is defined
 
-- name: templating init script.
+- name: templating init script
   become: True
   template:
     src: '{{ filebeat.service.template }}.j2'
