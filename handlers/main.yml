@@ -1,7 +1,8 @@
 ---
 # handlers file for filebeat
 
-# NOTE: this action will restart ALL filebeats on the target server (it means that all chained systemd filebeat daemonscripts will be forced to restart)
+# NOTE: this action will restart ALL filebeats on the target server.
+# It means that all chained systemd filebeat daemonscripts will be forced to restart
 - name: start_filebeat_systemd
   become: True
   systemd:
