@@ -1,6 +1,0 @@
----
-- name: Install filebeat on target host
-  hosts:
-    - filebeat
-  roles:
-    - ansible-role-filebeat-multiline
