@@ -134,7 +134,7 @@
     group: root
     mode: 0644
   with_fileglob:
-    - ../templates/parsers.d/*.awk.j2
+    - ../templates/parsers.d/*.awk
   loop_control:
     loop_var: parser_file
 
