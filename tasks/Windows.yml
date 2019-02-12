@@ -90,7 +90,7 @@
 
 - name: check awk
   win_shell: 'awk --version'
-  changed_when: false
+  changed_when: False
 
 - name: templating filebeat in/out configuration
   win_template:

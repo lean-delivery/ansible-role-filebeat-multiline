@@ -8,7 +8,7 @@
     name: "filebeat-pipeline"
     state: started
     enabled: True
-    daemon-reload: yes
+    daemon-reload: True
 
 - name: start_filebeat_initd
   become: True
