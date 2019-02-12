@@ -23,7 +23,8 @@
       changed_when: False
     
     - name: Install yum-utils
+      become: True
       yum:
         name: yum-utils
         state: present
-        become: True
+        
