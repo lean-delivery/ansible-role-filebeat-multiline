@@ -24,7 +24,7 @@ Ansible lint:
   tags:
     - aws
 
-.Docker ansible-role-filebeat-multiline:
+Docker ansible-role-filebeat-multiline:
   stage: deployment test
   script:
     - molecule test -s default
@@ -49,7 +49,7 @@ AWS ansible-role-filebeat-multiline:
 #   tags:
 #     - aws
 
-.EPC ansible-role-filebeat-multiline:
+EPC ansible-role-filebeat-multiline:
   variables:
     EPC_REGION: EPAM-BY2
   stage: deployment test
