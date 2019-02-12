@@ -9,8 +9,8 @@
   uri:
     url: https://api.github.com/repos/elastic/beats/releases/latest
     method: GET
-    return_content: yes
-    validate_certs: yes
+    return_content: True
+    validate_certs: True
   register: github
 
 - name: set github tag
@@ -54,7 +54,7 @@
   win_get_url:
     url: 'https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-{{ filebeat_specific_version }}-windows-x86_64.zip'
     dest: '{{ tmp.path }}\filebeat.zip'
-    force: no
+    force: False
 
 - name: Unzip filebeat
   win_unzip:
@@ -66,14 +66,14 @@
   win_copy:
     src: '{{ tmp.path }}/filebeat-{{ filebeat_specific_version }}-windows-x86_64/'
     dest: '{{ path.home }}/'
-    force: no
-    remote_src: yes
+    force: False
+    remote_src: True
 
 - name: Download awk
   win_copy:
     src: '{{ role_path }}/files/awk.zip'
     dest: '{{ tmp.path }}\awk.zip'
-    force: no
+    force: False
 
 - name: Unzip awk
   win_unzip:

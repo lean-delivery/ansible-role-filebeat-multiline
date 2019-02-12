@@ -126,8 +126,10 @@
 - name: templating awk parsers
   become: True
   template:
-    src: "{{ parser_file }}"
-    dest: "{{ path.config }}/parsers.d/{{ parser_file | basename | regex_replace('.j2','') }}"
+    # src: "{{ parser_file }}"
+    # dest: "{{ path.config }}/parsers.d/{{ parser_file | basename | regex_replace('.j2','') }}"
+    src: '{{ parser_file }}.j2'
+    dest: '{{ path.config }}/parsers.d/{{ parser_file }}'
     owner: root
     group: root
     mode: 0644
@@ -180,7 +182,7 @@
 - name: templating init script.
   become: True
   template:
-    src: '{{ filebeat.service.template }}'
+    src: '{{ filebeat.service.template }}.j2'
     dest: '{{ filebeat.service.path }}'
     owner: root
     group: root
