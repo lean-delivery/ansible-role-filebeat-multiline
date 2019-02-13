@@ -126,13 +126,14 @@
 - name: templating awk parsers
   become: True
   template:
-    src: "{{ parser_file | basename | regex_replace('.j2','') }}.j2"
+    src: '{{ parser_file }}'
     dest: "{{ path.config }}/parsers.d/{{ parser_file | basename | regex_replace('.j2','') }}"
-    # src: '{{ parser_file }}.j2'
+    # src: "{{ parser_file | basename | regex_replace('.j2','') }}.j2"
     # dest: '{{ path.config }}/parsers.d/{{ parser_file }}'
     owner: root
     group: root
     mode: 0644
+    force: True
   with_fileglob:
     - ../templates/parsers.d/*.awk.j2
   # loop:
@@ -144,23 +145,23 @@
   loop_control:
     loop_var: parser_file
 
-- name: templating awk parsers
-  become: True
-  template:
-    src: 'parsers.d/{{ parser_file }}.j2'
-    dest: '{{ path.config }}/parsers.d/{{ parser_file }}'
-    owner: root
-    group: root
-    mode: 0644
-    force: True
-  loop:
-    - parsing_access.awk
-    - parsing_hybris.awk
-    - parsing_java.awk
-    - parsing_solr.awk
-    - parsing_weblogic.awk
-  loop_control:
-    loop_var: parser_file
+# - name: templating awk parsers
+#   become: True
+#   template:
+#     src: 'parsers.d/{{ parser_file }}.j2'
+#     dest: '{{ path.config }}/parsers.d/{{ parser_file }}'
+#     owner: root
+#     group: root
+#     mode: 0644
+#     force: True
+#   loop:
+#     - parsing_access.awk
+#     - parsing_hybris.awk
+#     - parsing_java.awk
+#     - parsing_solr.awk
+#     - parsing_weblogic.awk
+#   loop_control:
+#     loop_var: parser_file
 
 - name: List parsers
   become: True
