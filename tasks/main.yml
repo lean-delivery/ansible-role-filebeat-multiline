@@ -11,13 +11,13 @@
 
 - name: Setting elastic values
   set_fact:
-    elasticsearch: "{{ elasticsearch | combine(es) }}"
-  when: es is defined
+    elasticsearch: "{{ elasticsearch | combine(elasticsearch) }}"
+  when: elasticsearch is defined
 
 - name: Setting logstash output values if defined
   set_fact:
-    elasticsearch: "{{ elasticsearch | combine(ls) }}"
-  when: ls is defined and filebeat_output != "elasticsearch"
+    elasticsearch: "{{ elasticsearch | combine(logstash) }}"
+  when: logstash is defined and filebeat_output != "elasticsearch"
 
 - name: Run on platform
   include_tasks: "{{ item }}"

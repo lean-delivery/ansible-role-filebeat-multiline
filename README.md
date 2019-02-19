@@ -56,9 +56,9 @@ Available values: `elasticsearch`, `logstash`. Default value is `elasticsearch`.
 filebeat_output: elasticsearch
 ```
 
-For each type of output connection details (`host` and `port` subelements) have to be specified with optional values `es` or `ls` for elasticsearch and logstash respectively:
+For each type of output connection details (`host` and `port` subelements) have to be specified with optional values `elasticsearch` or `ls` for elasticsearch and logstash respectively:
 ```
-    es:
+    elasticsearch:
       host: elastichost.example.com
       port: 9200
 ```
@@ -151,7 +151,7 @@ Playbook for installing on Linux client (use it as an example only!):
   vars:
     filebeat_version: 6.x
     filebeat_output: elasticsearch
-    es:
+    elasticsearch:
       host: client.example.com
       port: 9200
     filebeat_inputs:
@@ -173,7 +173,7 @@ Playbook for installing filebeat-multiline flow on Windows client (use it as an 
   vars:
     filebeat_version: 6.x
     filebeat_output: elasticsearch
-    es:
+    elasticsearch:
       host: client.example.com
       port: 9200
     filebeat_inputs:
