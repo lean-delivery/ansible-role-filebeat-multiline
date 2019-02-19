@@ -32,17 +32,18 @@
       register: server
       when: ( ec2_sets.instances | map(attribute='instance_id') | list | length )
     
-    - name: Get instance' volume(s)
-      ec2_vol_facts:
-        filters:
-          attachment.instance-id: "{{ ec2_sets.instances | map(attribute='instance_id') | list }}"
-      register: ec2_volume_id
+    # - name: Get instance' volume(s)
+    #   ec2_vol_facts:
+    #     filters:
+    #       attachment.instance-id: "{{ ec2_sets.instances | map(attribute='instance_id') | list }}"
+    #   register: ec2_volume_id
 
     - name: Delete instance' volume(s)
       ec2_vol:
-        instance: "{{ ec2_volume_id }}"
+#        instance: "{{ ec2_volume_id }}"
+        device_name: "/dev/sda1"
         state: absent
-      when: "( ec2_sets.instances | map(attribute='volume_id') | list | length )"
+#      when: "( ec2_sets.instances | map(attribute='volume_id') | list | length )"
 
     # Mandatory configuration for Molecule to function.
 
