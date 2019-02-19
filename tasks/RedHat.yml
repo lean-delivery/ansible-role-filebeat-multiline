@@ -54,11 +54,13 @@
   package:
     name: filebeat{% if filebeat_specific_version is defined %}-{{ filebeat_specific_version }}{% endif %}
     state: present
-
-- name: Find if filebeat is installed
-  yum:
-    list: filebeat
   register: filebeat_packages
+  until: filebeat_packages is succeeded
+
+# - name: Find if filebeat is installed
+#   yum:
+#     list: filebeat
+#   register: filebeat_packages
 
 - name: Extract filebeat actual installed version
   set_fact:
