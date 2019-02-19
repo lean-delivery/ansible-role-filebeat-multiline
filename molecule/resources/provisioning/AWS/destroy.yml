@@ -42,6 +42,7 @@
       ec2_vol:
 #        instance: "{{ ec2_volume_id }}"
         device_name: "/dev/sda1"
+        volume_size: "8"
         state: absent
 #      when: "( ec2_sets.instances | map(attribute='volume_id') | list | length )"
 
