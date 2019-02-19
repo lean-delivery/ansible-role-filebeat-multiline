@@ -39,7 +39,7 @@
 
     - name: Delete instance' volume(s)
       ec2_vol:
-        id: {{ ec2_volume_id }}
+        id: "{{ ec2_volume_id }}"
         state: absent
 
     # Mandatory configuration for Molecule to function.
