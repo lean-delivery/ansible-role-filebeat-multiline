@@ -29,10 +29,11 @@
 
     - name: debug info from single instance and many devices
       debug:
-        msg: " {{ ec2_sets.instances[0].block_device_mapping | map(attribute='volume_id') | list }}"
+        msg: " {{ ec2_sets.instances | map(attribute='block_device_mapping.volume_id') | list }}"
 
     - name: loop debug
-      debug: msg="{{ item.block_device_mapping | map(attribute='volume_id') | list }}"
+      debug: 
+        msg: "{{ item.block_device_mapping | map(attribute='volume_id') | list }}"
       with_items: "{{ ec2_sets.instances | map(attribute='instance_id') | list }}"
 
 
