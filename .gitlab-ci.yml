@@ -1,7 +1,7 @@
 ---
 # Run all tests
 stages:
-#  - lint
+  - lint
   - deployment test
 
 before_script:
@@ -12,7 +12,7 @@ before_script:
 variables:
   GET_SOURCES_ATTEMPTS: "5"
 
-Ansible lint:
+.Ansible lint:
   stage: lint
   before_script:
     - pip install git+https://github.com/ansible/ansible-lint.git
