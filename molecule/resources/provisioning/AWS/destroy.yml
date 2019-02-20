@@ -26,7 +26,7 @@
     - name: Get instances' volume(s)
       ec2_vol_facts:
         filters:
-          attachment.instance-id: "{{ ec2_sets.instances | map(attribute='instance_id') | list }}"
+          attachment.instance-id: "{{ ec2_sets.instances | map(attribute='volume_id') | list }}"
       register: ec2_vol_facts
 
     - name: Destroy molecule instance(s)
@@ -40,9 +40,9 @@
     
     - name: Delete instance' volume(s)
       ec2_vol:
-        id: "{{ ec2_vol_facts.volumes }}"
+        id: "{{ ec2_vol_facts }}"
         state: absent
-      when: "( ec2_sets.instances | map(attribute='volumes') | list | length )"
+  #    when: "( ec2_sets.instances | map(attribute='volumes') | list | length )"
 
     # Mandatory configuration for Molecule to function.
 
