@@ -72,6 +72,10 @@
       register: instance_config_dict
       when: instance_create.changed | bool
 
+    - name: Describe instance's volume(s)
+      debug:
+        msg: "{{  item.instances[0].volumes }}"
+
     - name: Convert instance config dict to a list
       set_fact:
         instance_conf: "{{ instance_config_dict.results | map(attribute='ansible_facts.instance_conf_dict') | list }}"
