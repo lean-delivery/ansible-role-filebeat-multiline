@@ -1,7 +1,7 @@
 ---
 # Run all tests
 stages:
-  - lint
+#  - lint
   - deployment test
 
 before_script:
