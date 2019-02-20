@@ -1,5 +1,10 @@
 ---
 - name: Converge
   hosts: all
-  roles:
-    - role: ansible-role-filebeat-multiline
+#   roles:
+#     - role: ansible-role-filebeat-multiline
+
+  tasks:
+    - name: debug
+      debug:
+        msg: " test1 "
