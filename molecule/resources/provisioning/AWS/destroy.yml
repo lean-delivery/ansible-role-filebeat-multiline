@@ -25,7 +25,8 @@
 
     - name: debug for volume id
       debug:
-        msg: "{{ ec2_sets.instances | map(attribute='placement.availability_zone') | list }}"
+#        msg: "{{ ec2_sets.instances | map(attribute='placement.availability_zone') | list }}"
+        msg: "{{ ec2_sets.instances.architecture }}"
 
     # - name: Get instances' volume(s)
     #   ec2_vol_facts:
