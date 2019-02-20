@@ -23,6 +23,10 @@
         region: us-east-1
       register: ec2_sets
 
+    - name: debug for volume id
+      debug:
+        msg: "{{ ec2_sets.instances | map(attribute='block_device_mappings') | list }}"
+
     # - name: Get instances' volume(s)
     #   ec2_vol_facts:
     #     filters:
