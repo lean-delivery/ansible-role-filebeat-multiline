@@ -3,8 +3,7 @@
   hosts: localhost
   connection: local
   gather_facts: False
-  #no_log: "{{ not ((lookup('env', 'MOLECULE_DEBUG') | bool) or (molecule_yml.provisioner.log | default(false) | bool)) }}"
-  no_log: false
+  no_log: "{{ not ((lookup('env', 'MOLECULE_DEBUG') | bool) or (molecule_yml.provisioner.log | default(false) | bool)) }}"
   vars:
     keypair_name: "molecule-key_\
       {{ lookup('env','MOLECULE_PROJECT_DIRECTORY').split('/')[-1] }}_\
@@ -22,42 +21,6 @@
           "tag:instance": "{{ molecule_yml.platforms | map(attribute='name') | list }}"
         region: us-east-1
       register: ec2_sets
-
-    - name: debug info from single instance and many devices 1
-      debug:
-        msg: "{{ ec2_sets.instances | list }}"
-
-    - name: debug info from single instance and many devices 2
-      debug:
-        msg: "{{ ec2_sets.instances | map(attribute='block_device_mappings') | list }}"
-
-    - name: debug info from single instance and many devices 3
-      debug:
-        msg: "{{ ec2_sets.instances | sum(attribute='block_device_mappings', start=[]) | map(attribute='ebs.volume_id') | list }}"
-
-    # - name: loop debug
-    #   debug: 
-    #     msg: "{{ item.block_device_mapping | map(attribute='volume_id') | list }}"
-    #   with_items: "{{ ec2_sets.instances | map(attribute='instance_id') | list }}"
-
-    # - name: debug for volume id
-    #   debug:
-    #     msg: "{{ ec2_sets.instances.block_device_mapping | map(attribute=''volume_id') | list }}"
-
-
-
-    # - name: Get instances' volume(s)
-    #   ec2_vol_facts:
-    #     filters:
-    #       attachment.instance-id: "{{ ec2_sets.instances | map(attribute='volume_id') | list }}"
-    #   register: ec2_vol_facts
-
-    # - name: Get instances' volume(s)
-    #   ec2_instance_facts:
-    #     filters:
-    #       instance-id: "{{ ec2_sets.instances | map(attribute='instance_id') | list }}"
-    #   register: ec2_sets
-    #   when: ( ec2_sets.instances | map(attribute='instance_id') | list | length )      
 
     - name: Destroy molecule instance(s)
       ec2:

@@ -37,7 +37,6 @@ AWS ansible-role-filebeat-multiline:
   stage: deployment test
   script:
     - molecule test -s cloud-aws-direct
-#   - molecule --debug test -s cloud-aws-direct
   tags:
     - aws
 
