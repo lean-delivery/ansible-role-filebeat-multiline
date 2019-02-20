@@ -72,8 +72,7 @@
       ec2_vol:
         id: "{{ ec2_sets.instances | sum(attribute='block_device_mappings', start=[]) | map(attribute='ebs.volume_id') | list }}"
         state: absent
-#      when: ( ec2_sets.instances | map(attribute='block_device_mappings.ebs.volume_id') | list | length )
-#      when: ( ec2_sets.instances | map(attribute='block_device_mappings') | list | length )
+      when: ( ec2_sets.instances | sum(attribute='block_device_mappings', start=[]) | map(attribute='ebs.volume_id') | list | length )
 
     # Mandatory configuration for Molecule to function.
 
