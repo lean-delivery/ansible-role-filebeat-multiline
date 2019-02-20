@@ -23,13 +23,17 @@
         region: us-east-1
       register: ec2_sets
 
-    - name: debug info from single instance and many devices
+    - name: debug info from single instance and many devices 1
       debug:
-        msg: "{{ ec2_sets.instances | map(attribute='block_device_mapping') | map(attribute='ebs.volume_id') | list }}"
+        msg: "{{ ec2_sets.instances | list }}"
 
-    - name: debug info from single instance and many devices
+    - name: debug info from single instance and many devices 2
       debug:
         msg: "{{ ec2_sets.instances | map(attribute='block_device_mapping') | list }}"
+
+    - name: debug info from single instance and many devices 3
+      debug:
+        msg: "{{ ec2_sets.instances | map(attribute='block_device_mapping') | map(attribute='ebs.volume_id') | list }}"
 
     # - name: loop debug
     #   debug: 
