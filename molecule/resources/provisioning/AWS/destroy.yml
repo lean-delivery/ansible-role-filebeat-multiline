@@ -33,7 +33,7 @@
 
     - name: debug info from single instance and many devices 3
       debug:
-        msg: "{{ ec2_sets.instances | sum(attribute='block_device_mappings', start=[]) | map(attribute='volume_id') | list }}"
+        msg: "{{ ec2_sets.instances | sum(attribute='block_device_mappings', start=[]) | map(attribute='ebs.volume_id') | list }}"
 
     # - name: loop debug
     #   debug: 
