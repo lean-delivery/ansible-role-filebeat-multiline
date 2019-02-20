@@ -23,6 +23,12 @@
         region: us-east-1
       register: ec2_sets
 
+    - name: Get instances' volume(s)
+      ec2_vol_facts:
+        filters:
+          attachment.instance-id: "{{ ec2_sets.instances | map(attribute='instance_id') | list }}"
+      register: ec2_vol_facts
+
     - name: Destroy molecule instance(s)
       ec2:
         state: absent
@@ -32,17 +38,11 @@
       register: server
       when: ( ec2_sets.instances | map(attribute='instance_id') | list | length )
     
-    # - name: Get instance' volume(s)
-    #   ec2_vol_facts:
-    #     filters:
-    #       attachment.instance-id: "{{ ec2_sets.instances | map(attribute='instance_id') | list }}"
-    #   register: ec2_volume_id
+
 
     - name: Delete instance' volume(s)
       ec2_vol:
-#        instance: "{{ ec2_volume_id }}"
-        device_name: "/dev/sda1"
-        volume_size: "8"
+        instance: "{{ ec2_vol_facts.volumes }}"
         state: absent
 #      when: "( ec2_sets.instances | map(attribute='volume_id') | list | length )"
 
