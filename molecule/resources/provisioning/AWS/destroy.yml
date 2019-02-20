@@ -31,8 +31,9 @@
 
     - name: Get instances' volume(s)
       ec2_instance_facts:
-        instance_ids:
-          - "{{ ec2_sets.instances | map(attribute='instance_id') | list }}"
+        filters:
+          instance-id: "{{ ec2_sets.instances | map(attribute='instance_id') | list }}"
+      register: ec2_facts
 
     - name: Destroy molecule instance(s)
       ec2:
