@@ -44,7 +44,7 @@
       ec2_vol:
         instance: "{{ ec2_vol_facts.volumes }}"
         state: absent
-#      when: "( ec2_sets.instances | map(attribute='volume_id') | list | length )"
+      when: "( ec2_sets.instances | map(attribute='volumes') | list | length )"
 
     # Mandatory configuration for Molecule to function.
 
