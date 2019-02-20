@@ -33,12 +33,12 @@
     #       attachment.instance-id: "{{ ec2_sets.instances | map(attribute='volume_id') | list }}"
     #   register: ec2_vol_facts
 
-    - name: Get instances' volume(s)
-      ec2_instance_facts:
-        filters:
-          instance-id: "{{ ec2_sets.instances | map(attribute='instance_id') | list }}"
-      register: ec2_facts
-      when: ( ec2_sets.instances | map(attribute='instance_id') | list | length )      
+    # - name: Get instances' volume(s)
+    #   ec2_instance_facts:
+    #     filters:
+    #       instance-id: "{{ ec2_sets.instances | map(attribute='instance_id') | list }}"
+    #   register: ec2_facts
+    #   when: ( ec2_sets.instances | map(attribute='instance_id') | list | length )      
 
     - name: Destroy molecule instance(s)
       ec2:
@@ -53,8 +53,7 @@
       ec2_vol:
         id: "{{ ec2_facts.block_device_mappings.ebs.volume_id }}"
         state: absent
-      when: ( ec2_sets.instances | map(attribute='volumes') | list | length )
-  #    when: ec2_facts != "Undefined"
+      when: ( ec2_sets.instances | map(attribute='block_device_mappings') | list )
 
     # Mandatory configuration for Molecule to function.
 
