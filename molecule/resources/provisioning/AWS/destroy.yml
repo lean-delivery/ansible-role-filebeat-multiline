@@ -49,7 +49,7 @@
       ec2_vol:
         id: "{{ ec2_facts.block_device_mappings.ebs.volume_id }}"
         state: absent
-      when: "( ec2_sets.instances | map(attribute='volumes') | list | length )"
+      when: ( ec2_sets.instances | map(attribute='volumes') | list | length )
   #    when: ec2_facts != "Undefined"
 
     # Mandatory configuration for Molecule to function.
