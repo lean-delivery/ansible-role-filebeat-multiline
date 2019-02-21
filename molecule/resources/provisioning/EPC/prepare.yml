@@ -24,13 +24,16 @@
 
     - name: download get-pip.py
       get_url: url=https://bootstrap.pypa.io/get-pip.py  dest=/tmp
+      become: True
     
     - name: install pip
       command: "python /tmp/get-pip.py"
+      become: True
     
     - name: delete get-pip.py
       file: state=absent path=/tmp/get-pip.py
-      
+      become: True
+
     - name: Run pip to install jmespath
       pip: 
         name: jmespath
