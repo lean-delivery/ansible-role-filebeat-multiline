@@ -21,6 +21,16 @@
       raw: test -e /usr/bin/python || (yum install -y python2 python-simplejson python-pip python-jmespath)
       become: True
       changed_when: False
+
+    - name: download get-pip.py
+      get_url: url=https://bootstrap.pypa.io/get-pip.py  dest=/tmp
+    
+    - name: install pip
+      command: "python /tmp/get-pip.py"
+    
+    - name: delete get-pip.py
+      file: state=absent path=/tmp/get-pip.py
+      
     - name: Run pip to install jmespath
       pip: 
         name: jmespath
