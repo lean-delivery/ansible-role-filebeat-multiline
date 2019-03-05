@@ -57,11 +57,11 @@
   register: filebeat_packages
   until: filebeat_packages is succeeded
 
-- name: Find if filebeat is installed
-  yum:
-    list: filebeat
-  register: filebeat_packages
-  until: filebeat_packages is succeeded
+# - name: Find if filebeat is installed
+#   yum:
+#     list: filebeat
+#   register: filebeat_packages
+#   until: filebeat_packages is succeeded
 
 - name: Extract filebeat actual installed version
   set_fact:
