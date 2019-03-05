@@ -4,22 +4,22 @@
     path: '{{ path | combine(win.path) }}'
     ssl: '{{ ssl | combine(win.ssl) }}'
 
-- name: output beats version
-  delegate_to: localhost
-  uri:
-    url: https://api.github.com/repos/elastic/beats/releases/latest
-    method: GET
-    return_content: True
-    validate_certs: True
-  register: github
+# - name: output beats version
+#   delegate_to: localhost
+#   uri:
+#     url: https://api.github.com/repos/elastic/beats/releases/latest
+#     method: GET
+#     return_content: True
+#     validate_certs: True
+#   register: github
 
-- name: set github tag
-  set_fact:
-    gtag: '{{ github.content }}'
+# - name: set github tag
+#   set_fact:
+#     gtag: '{{ github.content }}'
 
-- name: set last filebeat version
-  set_fact:
-    filebeat_last_version: '{{ gtag.tag_name[1:] }}'
+# - name: set last filebeat version
+#   set_fact:
+#     filebeat_last_version: '{{ gtag.tag_name[1:] }}'
 
 - name: Set filebeat_specific_version if specified
   set_fact:
@@ -37,10 +37,9 @@
   when: filebeat_specific_version is version_compare('6.3.0', operator='ge', strict=True)
 
 - name: Create temporary build directory
-  win_tempfile:
+  win_file:
     state: directory
-    suffix: fbeat
-  register: tmp
+    path: '{{ win_download_path }}'
 
 - name: Setup path folders
   win_file:
@@ -53,18 +52,18 @@
 - name: Download filebeat
   win_get_url:
     url: 'https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-{{ filebeat_specific_version }}-windows-x86_64.zip'
-    dest: '{{ tmp.path }}\filebeat.zip'
+    dest: '{{ win_download_path }}\filebeat.zip'
     force: False
 
 - name: Unzip filebeat
   win_unzip:
-    src: '{{ tmp.path }}/filebeat.zip'
-    dest: '{{ tmp.path }}'
-    creates: '{{ tmp.path }}/filebeat-{{ filebeat_specific_version }}-windows-x86_64'
+    src: '{{ win_download_path }}/filebeat.zip'
+    dest: '{{ win_download_path }}'
+    creates: '{{ win_download_path }}/filebeat-{{ filebeat_specific_version }}-windows-x86_64'
 
 - name: Copy files to home directory
   win_copy:
-    src: '{{ tmp.path }}/filebeat-{{ filebeat_specific_version }}-windows-x86_64/'
+    src: '{{ win_download_path }}/filebeat-{{ filebeat_specific_version }}-windows-x86_64/'
     dest: '{{ path.home }}/'
     force: False
     remote_src: True
