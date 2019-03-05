@@ -36,7 +36,7 @@ filebeat_node_name: "{{ inventory_hostname }}"
 filebeat_output: "elasticsearch"
 filebeat_ssl_enabled: false
 win_awk_install_path: 'C:\program files\awk'
-
+win_download_path: '{{ ansible_env.TEMP }}/filebeat'
 
 filebeat:
   service:
