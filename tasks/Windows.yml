@@ -71,12 +71,12 @@
 - name: Download awk
   win_copy:
     src: '{{ role_path }}/files/awk.zip'
-    dest: '{{ tmp.path }}\awk.zip'
+    dest: '{{ win_download_path }}\awk.zip'
     force: False
 
 - name: Unzip awk
   win_unzip:
-    src: '{{ tmp.path }}\awk.zip'
+    src: '{{ win_download_path }}\awk.zip'
     dest: '{{ win_awk_install_path }}'
     creates: '{{ win_awk_install_path }}'
 
