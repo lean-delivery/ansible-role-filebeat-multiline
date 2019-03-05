@@ -57,27 +57,27 @@
   register: filebeat_packages
   until: filebeat_packages is succeeded
 
-- name: Find if filebeat is installed
-  yum:
-    list: filebeat
-  register: filebeat_packages
-  until: filebeat_packages is succeeded
+# - name: Find if filebeat is installed
+#   yum:
+#     list: filebeat
+#   register: filebeat_packages
+#   until: filebeat_packages is succeeded
 
-- name: Extract filebeat actual installed version
-  set_fact:
-    filebeat_rpm_version: "{{ filebeat_packages|json_query(jsonquery) }}"
-  vars:
-    jsonquery: "results[?yumstate=='installed'].version"
+# - name: Extract filebeat actual installed version
+#   set_fact:
+#     filebeat_rpm_version: "{{ filebeat_packages|json_query(jsonquery) }}"
+#   vars:
+#     jsonquery: "results[?yumstate=='installed'].version"
 
-- name: Set filebeat_inputs_type
-  set_fact:
-    filebeat_inputs_type: type
-  when: filebeat_rpm_version[0] is version_compare('6.0.0', operator='ge', strict=True)
+# - name: Set filebeat_inputs_type
+#   set_fact:
+#     filebeat_inputs_type: type
+#   when: filebeat_rpm_version[0] is version_compare('6.0.0', operator='ge', strict=True)
 
-- name: Set filebeat_inputs_name
-  set_fact:
-    filebeat_inputs_name: inputs
-  when: filebeat_rpm_version[0] is version_compare('6.3.0', operator='ge', strict=True)
+# - name: Set filebeat_inputs_name
+#   set_fact:
+#     filebeat_inputs_name: inputs
+#   when: filebeat_rpm_version[0] is version_compare('6.3.0', operator='ge', strict=True)
 
 - name: Setup path folders
   become: True
