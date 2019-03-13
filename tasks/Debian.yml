@@ -24,6 +24,10 @@
       register: awk_installed_version
       changed_when: False
 
+    - name: debug awk version
+      debug:
+        var:"{{ awk_installed_version }}"
+
     - name: Set awk version number
       set_fact:
         awk_version: '{{ awk_installed_version.stdout_lines[0][8:13] }}'
