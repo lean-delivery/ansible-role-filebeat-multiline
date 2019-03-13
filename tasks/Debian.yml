@@ -51,7 +51,10 @@
             src: '/usr/local/bin/gawk'
             dest: '/bin/awk'
             state: link
-      when: awk_version is version_compare('4.2.1', operator='lt', strict=True)
+      when: |
+       awk_version is version('4.2.1', operator='lt', strict=True)
+       or not awk_installed_version.stdout
+
 
     - name: Debian - Install elasticsearch repository
       apt_repository:
