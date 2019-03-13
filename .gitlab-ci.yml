@@ -32,7 +32,7 @@ Docker ansible-role-filebeat-multiline:
   tags:
     - aws
 
-.AWS ansible-role-filebeat-multiline:
+AWS ansible-role-filebeat-multiline:
   variables:
     AWS_REGION: us-east-1
   stage: deployment test
@@ -41,7 +41,7 @@ Docker ansible-role-filebeat-multiline:
   tags:
     - aws
 
-.AWS Windows ansible-role-filebeat-multiline:
+AWS Windows ansible-role-filebeat-multiline:
   variables:
     AWS_REGION: us-east-1
   stage: deployment test
