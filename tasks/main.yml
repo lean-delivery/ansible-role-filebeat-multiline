@@ -34,4 +34,3 @@
     - not-supported.yml
   loop_control:
     loop_var: platform
-
