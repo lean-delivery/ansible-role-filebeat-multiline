@@ -25,13 +25,13 @@
       changed_when: False
       ignore_errors: True
 
-    - name: debug awk version
-      debug:
-        var: awk_installed_version
+    # - name: debug awk version
+    #   debug:
+    #     var: awk_installed_version
 
-    - name: Set awk version number
-      set_fact:
-        awk_version: '{{ awk_installed_version.stdout_lines[0][8:13] }}'
+    # - name: Set awk version number
+    #   set_fact:
+    #     awk_version: '{{ awk_installed_version.stdout_lines[0][8:13] }}'
 
     - name: Update awk to new version
       become: True
@@ -53,7 +53,7 @@
             dest: '/bin/awk'
             state: link
       when: |
-       awk_version is version('4.2.1', operator='lt', strict=True)
+       awk_installed_version.stdout_lines[0][8:13] is version('4.2.1', operator='lt', strict=True)
        or not awk_installed_version.stdout
 
 
