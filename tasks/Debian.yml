@@ -19,15 +19,15 @@
       register: add_gpg_key
       until: add_gpg_key is succeeded
 
-    - name: Checking awk version
-      command: "awk --version"
-      register: awk_installed_version
-      changed_when: False
-      ignore_errors: True
+    # - name: Checking awk version
+    #   command: "awk --version"
+    #   register: awk_installed_version
+    #   changed_when: False
+    #   ignore_errors: True
 
-    - name: debug awk version
-      debug:
-        var: awk_installed_version
+    # - name: debug awk version
+    #   debug:
+    #     var: awk_installed_version
 
     # - name: Set awk version number
     #   set_fact:
@@ -52,9 +52,9 @@
             src: '/usr/local/bin/gawk'
             dest: '/bin/awk'
             state: link
-      when: |
-       awk_installed_version.stdout_lines[0][8:13] is version('4.2.1', operator='lt', strict=True)
-       or awk_installed_version.stderr
+      # when: |
+      #  awk_installed_version.stdout_lines[0][8:13] is version('4.2.1', operator='lt', strict=True)
+      #  or awk_installed_version.stderr
 
     - name: Debian - Install elasticsearch repository
       apt_repository:
