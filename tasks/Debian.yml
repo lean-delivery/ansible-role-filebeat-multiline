@@ -30,7 +30,7 @@
 
     - name: Update awk to new version
       become: True
-      block:    
+      block:
         - name: copy gawk
           become: True
           copy:
@@ -39,7 +39,7 @@
             backup: True
             owner: root
             group: root
-            mode: 0755   
+            mode: 0755
 
         - name: update symlinks
           become: True
