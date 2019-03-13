@@ -55,8 +55,8 @@ filebeat:
         index_name: filebeat_input
 
 filebeat_service_name: filebeat-pipeline
-# filebeat_inputs_name: prospectors
-# filebeat_inputs_type: input_type
+filebeat_inputs_name: prospectors
+filebeat_inputs_type: input_type
 
 filebeat_bulk_max_size: 500
 filebeat_worker: 1
