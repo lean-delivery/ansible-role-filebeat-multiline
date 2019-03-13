@@ -20,7 +20,7 @@
       until: add_gpg_key is succeeded
 
     - name: Checking awk version
-      command: "awk --version"
+      command: "awk -W version"
       register: awk_installed_version
       changed_when: False
 
