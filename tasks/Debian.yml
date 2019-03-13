@@ -26,7 +26,7 @@
 
     - name: debug awk version
       debug:
-        var:"{{ awk_installed_version }}"
+        var:"{{ awk_installed_version.stdout_lines[0][0:50] }}"
 
     - name: Set awk version number
       set_fact:
