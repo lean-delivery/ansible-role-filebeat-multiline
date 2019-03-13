@@ -1,0 +1,69 @@
+---
+- name: Set Filebeat version if defined
+  set_fact:
+    fb_package_name: '{{ fb_package_name }}={{ filebeat_version }}'
+  when: filebeat_version.find('.x') == -1
+
+- block:
+    - name: Install dependency for Debian
+      package:
+        name: apt-transport-https
+        state: present
+      register: debian_dependency
+      until: debian_dependency is succeeded
+
+    - name: Importing latest logstash GPG Key
+      apt_key:
+        url: '{{ elastic_gpg_key }}'
+        state: present
+      register: add_gpg_key
+      until: add_gpg_key is succeeded
+
+    - name: Checking awk version
+      command: "awk --version"
+      register: awk_installed_version
+      changed_when: False
+
+    - name: Set awk version number
+      set_fact:
+        awk_version: '{{ awk_installed_version.stdout_lines[0][8:13] }}'
+
+    - name: Update awk to new version
+      become: True
+      block:    
+        - name: copy gawk
+          become: True
+          copy:
+            src: '{{ role_path }}/files/gawk'
+            dest: '/usr/local/bin/gawk'
+            backup: True
+            owner: root
+            group: root
+            mode: 0755   
+
+        - name: update symlinks
+          become: True
+          file:
+            src: '/usr/local/bin/gawk'
+            dest: '/bin/awk'
+            state: link
+      when: awk_version is version_compare('4.2.1', operator='lt', strict=True)
+
+    - name: Debian - Install elasticsearch repository
+      apt_repository:
+        repo: '{{ es_apt_url }}'
+        state: present
+        update_cache: True
+
+    - name: Debian - Installing Filebeat package
+      apt:
+        name: '{{ fb_package_name }}'
+        state: present
+      register: installed_package
+      until: installed_package is succeeded
+
+    - name: Create folder path for service script
+      file:
+        path: /usr/lib/systemd/system
+        state: directory
+  become: True
