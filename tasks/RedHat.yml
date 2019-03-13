@@ -10,6 +10,7 @@
   when: filebeat_version.find('.x') == -1
 
 - name: Importing latest logstash GPG Key
+  become: True
   rpm_key:
     key: '{{ elastic_gpg_key }}'
     state: present
