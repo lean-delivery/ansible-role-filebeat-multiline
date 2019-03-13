@@ -25,9 +25,9 @@
       changed_when: False
       ignore_errors: True
 
-    # - name: debug awk version
-    #   debug:
-    #     var: awk_installed_version
+    - name: debug awk version
+      debug:
+        var: awk_installed_version
 
     # - name: Set awk version number
     #   set_fact:
@@ -54,8 +54,7 @@
             state: link
       when: |
        awk_installed_version.stdout_lines[0][8:13] is version('4.2.1', operator='lt', strict=True)
-       or not awk_installed_version.stdout
-
+       or awk_installed_version.stderr
 
     - name: Debian - Install elasticsearch repository
       apt_repository:
