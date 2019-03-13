@@ -20,17 +20,17 @@
       until: add_gpg_key is succeeded
 
     - name: Checking awk version
-      command: "awk -W version"
+      command: "awk --version"
       register: awk_installed_version
       changed_when: False
 
-    - name: debug awk version
-      debug:
-        var:"{{ awk_installed_version.stdout_lines[0][0:50] }}"
+    # - name: Set awk version number
+    #   set_fact:
+    #     awk_version: '{{ awk_installed_version.stdout_lines[0][8:13] }}'
 
     - name: Set awk version number
       set_fact:
-        awk_version: '{{ awk_installed_version.stdout_lines[0][8:13] }}'
+        awk_version: '{{ awk_installed_version.stdout_lines[0][0:50] }}'
 
     - name: Update awk to new version
       become: True
