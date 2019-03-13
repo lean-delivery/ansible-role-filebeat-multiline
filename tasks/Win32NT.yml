@@ -4,15 +4,15 @@
     filebeat_specific_version: '{{ filebeat_last_version }}'
   when: filebeat_version.split('.')[1] == 'x'
 
-# - name: Set filebeat_inputs_type
-#   set_fact:
-#     filebeat_inputs_type: type
-#   when: filebeat_specific_version is version_compare('6.0.0', operator='ge', strict=True)
+- name: Set filebeat_inputs_type
+  set_fact:
+    filebeat_inputs_type: type
+  when: filebeat_specific_version is version_compare('6.0.0', operator='ge', strict=True)
 
-# - name: Set filebeat_inputs_name
-#   set_fact:
-#     filebeat_inputs_name: inputs
-#   when: filebeat_specific_version is version_compare('6.3.0', operator='ge', strict=True)
+- name: Set filebeat_inputs_name
+  set_fact:
+    filebeat_inputs_name: inputs
+  when: filebeat_specific_version is version_compare('6.3.0', operator='ge', strict=True)
 
 - name: Create temporary build directory
   win_file:
