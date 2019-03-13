@@ -23,6 +23,7 @@
       command: "awk --version"
       register: awk_installed_version
       changed_when: False
+      ignore_errors: True
 
     - name: debug awk version
       debug:
