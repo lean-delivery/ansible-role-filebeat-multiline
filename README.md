@@ -1,9 +1,8 @@
-<<<<<<< HEAD
 Filebeat multiline
 =========
 [![build status](https://git.epam.com/dip-roles/filebeat-multiline/badges/master/build.svg)](https://git.epam.com/dip-roles/filebeat-multiline/pipelines)
 
-This role can be used to install Filebeat pipeline (filebeat-awk-filebeat) on Centos 6,7 or Windows host. 
+This role can be used to install Filebeat pipeline (filebeat-awk-filebeat) on Centos 6,7/Ubuntu 16,18 or Windows host. 
 
 Filebeat versions supported: all stable versions from 5 and 6 branches. Filebeat can have versions 5.x.x or 6.x.x so far.
 
@@ -149,8 +148,7 @@ Playbook for installing on Linux client (use it as an example only!):
 - name: Install filebeat multiline
   hosts: filebeat
   vars:
-    filebeat_version: 6.x
-    filebeat_output: elasticsearch
+    elastic_branch: 6
     elasticsearch:
       host: client.example.com
       port: 9200
@@ -171,8 +169,7 @@ Playbook for installing filebeat-multiline flow on Windows client (use it as an 
 - name: install filebeat-multiline hybris flow
   hosts: filebeat
   vars:
-    filebeat_version: 6.x
-    filebeat_output: elasticsearch
+    elastic_branch: 6
     elasticsearch:
       host: client.example.com
       port: 9200
@@ -235,4 +232,3 @@ DEP Infrastructure Framework Project Team <specialepm-ldidevops@epam.com>
 =======
 # ansible-role-filebeat-multiline
 Ansible role to install filebeat-multiline with AWK parsers
->>>>>>> dafcc69f5b787b4dc9612adcc625f5870042dcc9
