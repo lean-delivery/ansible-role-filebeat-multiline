@@ -59,14 +59,14 @@ filebeat_inputs_name: prospectors
 filebeat_inputs_type: input_type
 
 filebeat_bulk_max_size: 500
-filebeat_worker: 1
-filebeat_logging_to_syslog: false
-filebeat_logging_to_files: true
+filebeat_logging_to_syslog: False
+filebeat_logging_to_files: True
 filebeat_rotateeverybytes: 104857600
 filebeat_keepfiles: 30
-filebeat_ignore_older: 0
-filebeat_scan_frequency: "15s"
-filebeat_harvester_buffer_size: 65535
+# filebeat_worker: 1
+# filebeat_ignore_older: 0
+# filebeat_scan_frequency: "15s"
+# filebeat_harvester_buffer_size: 65535
 
 
 # awk section

@@ -19,11 +19,11 @@ output.console:
 
 # logging settings
 logging.level: info
-logging.to_syslog: False
-logging.to_files: True
+logging.to_syslog: {{ filebeat_logging_to_syslog }}
+logging.to_files: {{ filebeat_logging_to_files }}
 logging.files:
   path: {{ path.logs }}
   name: filebeat-in.log
-  rotateeverybytes: 104857600
-  keepfiles: 30
+  rotateeverybytes: {{ filebeat_rotateeverybytes }}
+  keepfiles: {{ filebeat_keepfiles }}
   
