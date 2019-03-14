@@ -12,7 +12,7 @@
       register: debian_dependency
       until: debian_dependency is succeeded
 
-    - name: Importing latest logstash GPG Key
+    - name: Debian - Importing latest logstash GPG Key
       apt_key:
         url: '{{ elastic_gpg_key }}'
         state: present
@@ -33,25 +33,25 @@
     #   set_fact:
     #     awk_version: '{{ awk_installed_version.stdout_lines[0][8:13] }}'
 
-    - name: Update awk to new version
-      become: True
-      block:
-        - name: copy gawk
-          become: True
-          copy:
-            src: '{{ role_path }}/files/gawk'
-            dest: '/usr/local/bin/gawk'
-            backup: True
-            owner: root
-            group: root
-            mode: 0755
+    # - name: Update awk to new version
+    #   become: True
+    #   block:
+    #     - name: copy gawk
+    #       become: True
+    #       copy:
+    #         src: '{{ role_path }}/files/gawk'
+    #         dest: '/usr/local/bin/gawk'
+    #         backup: True
+    #         owner: root
+    #         group: root
+    #         mode: 0755
 
-        - name: update symlinks
-          become: True
-          file:
-            src: '/usr/local/bin/gawk'
-            dest: '/bin/awk'
-            state: link
+    #     - name: update symlinks
+    #       become: True
+    #       file:
+    #         src: '/usr/local/bin/gawk'
+    #         dest: '/bin/awk'
+    #         state: link
       # when: |
       #  awk_installed_version.stdout_lines[0][8:13] is version('4.2.1', operator='lt', strict=True)
       #  or awk_installed_version.stderr

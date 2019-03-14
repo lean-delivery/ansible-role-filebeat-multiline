@@ -9,7 +9,7 @@
     fb_package_name: '{{ fb_package_name }}-{{ filebeat_version }}'
   when: filebeat_version.find('.x') == -1
 
-- name: Importing latest logstash GPG Key
+- name: Redhat - Importing latest logstash GPG Key
   become: True
   rpm_key:
     key: '{{ elastic_gpg_key }}'
@@ -22,35 +22,35 @@
 #     ssl: "{{ ssl | combine(fb_ssl) }}"
 #   when: fb_ssl is defined and filebeat_ssl_enabled
 
-- name: Checking awk version
-  command: "awk --version"
-  register: awk_installed_version
-  changed_when: False
+# - name: Checking awk version
+#   command: "awk --version"
+#   register: awk_installed_version
+#   changed_when: False
 
-- name: Set awk version number
-  set_fact:
-    awk_version: '{{ awk_installed_version.stdout_lines[0][8:13] }}'
+# - name: Set awk version number
+#   set_fact:
+#     awk_version: '{{ awk_installed_version.stdout_lines[0][8:13] }}'
 
-- name: Update awk to new version
-  become: True
-  block:
-    - name: copy gawk
-      become: True
-      copy:
-        src: '{{ role_path }}/files/gawk'
-        dest: '/usr/local/bin/gawk'
-        backup: True
-        owner: root
-        group: root
-        mode: 0755
+# - name: Update awk to new version
+#   become: True
+#   block:
+#     - name: copy gawk
+#       become: True
+#       copy:
+#         src: '{{ role_path }}/files/gawk'
+#         dest: '/usr/local/bin/gawk'
+#         backup: True
+#         owner: root
+#         group: root
+#         mode: 0755
 
-    - name: update symlinks
-      become: True
-      file:
-        src: '/usr/local/bin/gawk'
-        dest: '/bin/awk'
-        state: link
-  when: awk_version is version_compare('4.2.1', operator='lt', strict=True)
+#     - name: update symlinks
+#       become: True
+#       file:
+#         src: '/usr/local/bin/gawk'
+#         dest: '/bin/awk'
+#         state: link
+#   when: awk_version is version_compare('4.2.1', operator='lt', strict=True)
 
 - name: Redhat - Install elasticsearch repository
   become: True
