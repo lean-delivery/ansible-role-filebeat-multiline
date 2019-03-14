@@ -229,6 +229,3 @@ Proprietary, property of EPAM Systems
 ## Author Information
 
 DEP Infrastructure Framework Project Team <specialepm-ldidevops@epam.com>
-=======
-# ansible-role-filebeat-multiline
-Ansible role to install filebeat-multiline with AWK parsers
