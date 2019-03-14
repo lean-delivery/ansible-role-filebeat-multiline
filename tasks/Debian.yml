@@ -25,10 +25,6 @@
     #   changed_when: False
     #   ignore_errors: True
 
-    # - name: debug awk version
-    #   debug:
-    #     var: awk_installed_version
-
     # - name: Set awk version number
     #   set_fact:
     #     awk_version: '{{ awk_installed_version.stdout_lines[0][8:13] }}'
@@ -52,9 +48,6 @@
     #         src: '/usr/local/bin/gawk'
     #         dest: '/bin/awk'
     #         state: link
-      # when: |
-      #  awk_installed_version.stdout_lines[0][8:13] is version('4.2.1', operator='lt', strict=True)
-      #  or awk_installed_version.stderr
 
     - name: Debian - Install elasticsearch repository
       apt_repository:
@@ -69,7 +62,7 @@
       register: installed_package
       until: installed_package is succeeded
 
-    - name: Create folder path for service script
+    - name: Debian - Create folder path for service script
       file:
         path: /usr/lib/systemd/system
         state: directory

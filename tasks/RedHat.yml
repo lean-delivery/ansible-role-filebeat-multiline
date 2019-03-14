@@ -17,11 +17,6 @@
   register: installed_key
   until: installed_key is succeeded
 
-# - name: Setting elastic values
-#   set_fact:
-#     ssl: "{{ ssl | combine(fb_ssl) }}"
-#   when: fb_ssl is defined and filebeat_ssl_enabled
-
 # - name: Checking awk version
 #   command: "awk --version"
 #   register: awk_installed_version
