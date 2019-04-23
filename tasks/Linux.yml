@@ -1,4 +1,12 @@
 ---
+- name: Load a variable file based on the service manager
+  include_vars: '{{ service_manager }}'
+  with_first_found:
+    - '{{ ansible_service_mgr }}.yml'
+    - systemv.yml
+  loop_control:
+    loop_var: service_manager
+
 - name: Installing filebeat on current OS
   include_tasks: '{{ platform_tasks }}'
   with_first_found:
@@ -52,15 +60,15 @@
 
     - name: Creating directories for awk
       file:
-        path: "{{ path.config }}/{{ config_dir }}"
+        path: '{{ path.config }}/{{ config_dir }}'
         state: directory
         owner: root
         group: root
         mode: 0644
       with_items:
-        - "awk.d"
-        - "parsers.d"
-        - "inputs.d"
+        - 'awk.d'
+        - 'parsers.d'
+        - 'inputs.d'
       loop_control:
         loop_var: config_dir
 
@@ -88,7 +96,7 @@
     - name: List parsers
       find:
         paths: '{{ path.config }}/parsers.d/'
-        patterns: "*"
+        patterns: '*'
       register: awk_files
 
     - name: templating awk pipeline
@@ -122,12 +130,11 @@
         loop_var: fb_input
       when: filebeat_inputs is defined
 
-    - name: templating init script
+    - name: "Copy service configuration file"
       template:
-        src: '{{ filebeat.service.template }}.j2'
-        dest: '{{ filebeat.service.path }}'
-        owner: root
-        group: root
-        mode: u+rwx
-      notify: '{{ filebeat.service.handler }}'
+        src: '{{ fb_service_script_template }}.j2'
+        dest: '{{ fb_service_path }}/{{ fb_service_script }}'
+        mode: '{{ fb_service_script_mode }}'
+        force: True
+      notify: '{{ fb_service_handlers }}'
   become: True

@@ -1,8 +1,8 @@
 ---
-- name: Setting InitD init system variables.
-  set_fact:
-    filebeat: "{{ filebeat | combine(initd) }}"
-  when: ansible_service_mgr != 'systemd'
+# - name: Setting InitD init system variables.
+#   set_fact:
+#     filebeat: "{{ filebeat | combine(initd) }}"
+#   when: ansible_service_mgr != 'systemd'
 
 - name: Set Filebeat version if defined
   set_fact:
@@ -37,4 +37,3 @@
     update_cache: True
   register: installed_package
   until: installed_package is succeeded
-  notify: Restart filebeat

@@ -1,31 +1,29 @@
 ---
 # handlers file for filebeat
-
-# NOTE: this action will restart ALL filebeats on the target server.
-# It means that all chained systemd filebeat daemonscripts will be forced to restart
-- name: start_filebeat_systemd
-  become: True
+- name: Stop default filebeat
   systemd:
-    name: "filebeat-pipeline"
-    state: started
-    enabled: True
-    daemon-reload: True
-
-- name: start_filebeat_initd
+    name: filebeat
+    state: stopped
+    enabled: False
   become: True
-  service:
-    name: "filebeat-pipeline"
-    pattern: "{{ path.home }}/bin/filebeat"
-    state: started
-    enabled: True
 
 - name: Reload systemd configuration
   systemd:
     daemon_reload: True
   become: True
 
-- name: Restart filebeat
+- name: Start filebeat systemd
+  systemd:
+    name: '{{ fb_service_script }}'
+    state: started
+    enabled: True
+    #daemon-reload: True
+  become: True
+
+- name: Start filebeat initd
   service:
-    name: filebeat
+    name: '{{ fb_service_script }}'
+    # pattern: "{{ path.home }}/bin/filebeat"
     state: restarted
+    enabled: True
   become: True

@@ -6,9 +6,10 @@
 
 - block:
     - name: Install dependency for Debian
-      package:
+      apt:
         name: apt-transport-https
         state: present
+        update_cache: True
       register: debian_dependency
       until: debian_dependency is succeeded
 
@@ -34,6 +35,6 @@
 
     - name: Debian - Create folder path for service script
       file:
-        path: /usr/lib/systemd/system
+        path: '{{ fb_service_path }}'
         state: directory
   become: True
