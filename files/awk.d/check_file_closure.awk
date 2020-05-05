@@ -6,10 +6,11 @@ function check_file_closure(slog)               # checking input for file closur
                 n = match($0, "Closing because close_inactive")
                 closed_log = substr($0,m+18,n-m-20)
                 gsub(/\\/,"\\\\",closed_log)
-                if (closed_log in message)
+                if (closed_log in message){
                     out_multiline(closed_log)
-                cleaner = logtype[closed_log] "_clean"
-                @cleaner(closed_log)
+                    cleaner = logtype[closed_log] "_clean"
+                    @cleaner(closed_log)
+                }
         }
         next
 }
