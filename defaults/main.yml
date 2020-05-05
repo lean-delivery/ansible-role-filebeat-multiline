@@ -27,8 +27,8 @@ initd:
     template: filebeat-template.initd
     handler: start_filebeat_initd
 
-filebeat_version: 6.x
-filebeat_last_version: 6.6.0
+filebeat_version: 7.x
+filebeat_last_version: 7.6.0
 filebeat_inputs_name: prospectors
 filebeat_inputs_type: input_type
 filebeat_service_name: filebeat-pipeline
