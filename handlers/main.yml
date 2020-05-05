@@ -1,0 +1,20 @@
+---
+# handlers file for filebeat
+
+# NOTE: this action will restart ALL filebeats on the target server.
+# It means that all chained systemd filebeat daemonscripts will be forced to restart
+- name: start_filebeat_systemd
+  become: true
+  systemd:
+    name: "filebeat-pipeline"
+    state: started
+    enabled: true
+    daemon-reload: true
+
+- name: start_filebeat_initd
+  become: true
+  service:
+    name: "filebeat-pipeline"
+    pattern: "{{ path.home }}/bin/filebeat"
+    state: started
+    enabled: true

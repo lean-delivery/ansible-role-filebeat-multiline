@@ -1,0 +1,19 @@
+---
+galaxy_info:
+  role_name: ansible_role_filebeat_multiline
+  author: Lean Delivery Team <team@lean-delivery.com>
+  description: Role for filebeat multiline flow installation
+  company: EPAM Systems
+  issue_tracker_url: https://github.com/lean-delivery/ansible-role-filebeat-multiline/issues
+  license: Apache
+  min_ansible_version: 2.5
+  platforms:
+    - name: Windows
+      versions:
+        - all
+    - name: EL
+      versions:
+        - 6
+        - 7
+  galaxy_tags: [filebeat]
+dependencies: []
