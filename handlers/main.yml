@@ -4,17 +4,17 @@
 # NOTE: this action will restart ALL filebeats on the target server.
 # It means that all chained systemd filebeat daemonscripts will be forced to restart
 - name: start_filebeat_systemd
-  become: True
+  become: true
   systemd:
     name: "filebeat-pipeline"
     state: started
-    enabled: True
-    daemon-reload: True
+    enabled: true
+    daemon-reload: true
 
 - name: start_filebeat_initd
-  become: True
+  become: true
   service:
     name: "filebeat-pipeline"
     pattern: "{{ path.home }}/bin/filebeat"
     state: started
-    enabled: True
+    enabled: true
