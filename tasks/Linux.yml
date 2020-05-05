@@ -16,20 +16,20 @@
     loop_var: platform_tasks
 
 - name: Update awk to 4.2.1 version
-  become: True
+  become: true
   block:
     - name: copy gawk
-      become: True
+      become: true
       copy:
         src: '{{ role_path }}/files/gawk'
         dest: '/usr/local/bin/gawk'
-        backup: True
+        backup: true
         owner: root
         group: root
         mode: 0755
 
     - name: update symlinks
-      become: True
+      become: true
       file:
         src: '/usr/local/bin/gawk'
         dest: '/bin/awk'
@@ -87,7 +87,7 @@
         owner: root
         group: root
         mode: 0644
-        force: True
+        force: true
       with_fileglob:
         - ../templates/parsers.d/*.awk.j2
       loop_control:
@@ -135,6 +135,6 @@
         src: '{{ fb_service_script_template }}.j2'
         dest: '{{ fb_service_path }}/{{ fb_service_script }}'
         mode: '{{ fb_service_script_mode }}'
-        force: True
+        force: true
       notify: '{{ fb_service_handlers }}'
-  become: True
+  become: true

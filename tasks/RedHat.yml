@@ -10,7 +10,7 @@
   when: filebeat_version.find('.x') == -1
 
 - name: Redhat - Importing latest logstash GPG Key
-  become: True
+  become: true
   rpm_key:
     key: '{{ elastic_gpg_key }}'
     state: present
@@ -18,22 +18,22 @@
   until: installed_key is succeeded
 
 - name: Redhat - Install elasticsearch repository
-  become: True
+  become: true
   yum_repository:
     name: elasticsearch
     description: Elasticsearch repository
     file: '{{ es_repo_file }}'
     baseurl: '{{ es_yum_url }}'
-    gpgcheck: True
+    gpgcheck: true
     gpgkey: '{{ elastic_gpg_key }}'
-    enabled: True
+    enabled: true
     state: present
 
 - name: Redhat - Installing Filebeat package
-  become: True
+  become: true
   yum:
     name: '{{ fb_package_name }}'
     state: present
-    update_cache: True
+    update_cache: true
   register: installed_package
   until: installed_package is succeeded

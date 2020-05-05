@@ -2,7 +2,7 @@ Filebeat multiline
 =========
 [![build status](https://git.epam.com/dip-roles/filebeat-multiline/badges/master/build.svg)](https://git.epam.com/dip-roles/filebeat-multiline/pipelines)
 
-This role can be used to install Filebeat pipeline (filebeat-awk-filebeat) on Centos 6,7/Ubuntu 16,18 or Windows host. 
+This role can be used to install Filebeat pipeline (filebeat-awk-filebeat) on Centos 6,7/Ubuntu 16,18 or Windows host.
 
 Filebeat versions supported: all stable versions from 5 and 6 branches. Filebeat can have versions 5.x.x or 6.x.x so far.
 
@@ -33,21 +33,21 @@ Idempotence test fails on "Create service via nssm" task due [official ansible o
 Temporary added change_when: False option as a workaround.
 
 ## Requirements
-Properly written inventory file. 
+Properly written inventory file.
 
 [ca-cert role](https://git.epam.com/dip-roles/ca-cert)[![build status](https://git.epam.com/dip-roles/ca-cert/badges/master/build.svg)](https://git.epam.com/dip-roles/ca-cert/pipelines) required in case of SSL transfer is supposed to be used for log shipping.
 
 [Prepared Windows System](http://docs.ansible.com/ansible/latest/intro_windows.html#windows-system-prep)
 
-Properly working [awk](https://www.gnu.org/software/gawk/) is supposed to be present on target system. It's included in any modern Linux distribution by default. 
+Properly working [awk](https://www.gnu.org/software/gawk/) is supposed to be present on target system. It's included in any modern Linux distribution by default.
 
-For Windows case this role installs Windows version of awk automatically. 
+For Windows case this role installs Windows version of awk automatically.
 
 For Linux awk is updated to 4.2.1 if installed version is lower.
 
 ## Role Variables
-Variable `filebeat_version` specifies version of filebeat to be installed. It can be set as strict version value like '5.6.5' or branch version like '5.x' or '6.x'. 
-Default value is '6.x'. It means that last available version of 6.x branch will be installed.
+Variable `filebeat_version` specifies version of filebeat to be installed. It can be set as strict version value like '5.6.5' or branch version like '5.x' or '6.x'.
+Default value is '7.x'. It means that last available version of 7.x branch will be installed.
 
 Operate variable `filebeat_output` to set where data will be transferred.
 Available values: `elasticsearch`, `logstash`. Default value is `elasticsearch`.
@@ -62,18 +62,18 @@ For each type of output connection details (`host` and `port` subelements) have 
       port: 9200
 ```
 
-Variable `filebeat_inputs` defines type of logs that will be processed by pipeline, their log paths and Elasticsearch index that should store this type of logs. 
+Variable `filebeat_inputs` defines type of logs that will be processed by pipeline, their log paths and Elasticsearch index that should store this type of logs.
 You can specify several inputs with various paths, logtypes and index names using yaml format like in example below:
 ```
     filebeat_inputs:
       - name: hybris
-        paths: 
+        paths:
           - '/var/log/console*.log'
         fields:
           logtype: hybris
           index_name: hybris-console
       - name: access
-        paths: 
+        paths:
           - '/var/log/access*.log'
           - '/var/log/nginx_access*.log'
         fields:
@@ -93,8 +93,8 @@ SSL options should be set by corresponding dict fields like shown below:
     certificate_authorities: 'c:\CA\ca-root.pem'
 ```
 
-The `path` section of the configuration options defines where Filebeat looks for its files. 
-For example, Filebeat looks for the Elasticsearch template file in the configuration path and writes log files in the logs path. 
+The `path` section of the configuration options defines where Filebeat looks for its files.
+For example, Filebeat looks for the Elasticsearch template file in the configuration path and writes log files in the logs path.
 Filebeat looks for its registry files in the data path. Default values for Linux host are set up this way:
 ```
 path:
@@ -112,7 +112,7 @@ path:
   logs: 'c:\programdata\filebeat\logs'
 ```
 
-Custom user-specified fields can also be added to Elasticsearch fields for each client. 
+Custom user-specified fields can also be added to Elasticsearch fields for each client.
 The following options are available for custom details:
 - `filebeat_node_name`: name setting value for `beat.name` field. Default value is `filebeat`
 - `tags`: custom list of user-specified data added to each message with the same `tags` name
@@ -148,13 +148,13 @@ Playbook for installing on Linux client (use it as an example only!):
 - name: Install filebeat multiline
   hosts: filebeat
   vars:
-    elastic_branch: 6
+    elastic_branch: 7
     elasticsearch:
       host: client.example.com
       port: 9200
     filebeat_inputs:
       - name: hybris
-        paths: 
+        paths:
           - '/var/log/console*.log'
         fields:
           logtype: hybris
@@ -169,13 +169,13 @@ Playbook for installing filebeat-multiline flow on Windows client (use it as an 
 - name: install filebeat-multiline hybris flow
   hosts: filebeat
   vars:
-    elastic_branch: 6
+    elastic_branch: 7
     elasticsearch:
       host: client.example.com
       port: 9200
     filebeat_inputs:
       - name: hybris
-        paths: 
+        paths:
           - 'C:\\logs\\console*'
         fields:
           logtype: hybris
@@ -184,7 +184,7 @@ Playbook for installing filebeat-multiline flow on Windows client (use it as an 
      - role: ansible-role-filebeat-multiline
 ```
 
-For example, such logs as general java application logs with multiline and stacktraces can be processed by `java` type of current service. 
+For example, such logs as general java application logs with multiline and stacktraces can be processed by `java` type of current service.
 Source log can look like this:
 ```
 2018-05-17 11:02:38,352 [qtp1790421142-26              ] ERROR NodePoolServlet                - Validation error. WF host parameter is required
@@ -221,7 +221,7 @@ java.lang.NullPointerException: Validation error. WF host parameter is required
         at org.eclipse.jetty.util.thread.QueuedThreadPool$3.run(QueuedThreadPool.java:572)[jetty-util-9.3.6.v20151106.jar:9.3.3.v20150827]
         at java.lang.Thread.run(Thread.java:748)[:1.8.0_144]
 ```
-For this case you should set `logtype` to `java`. 
+For this case you should set `logtype` to `java`.
 
 ## License
 Proprietary, property of EPAM Systems

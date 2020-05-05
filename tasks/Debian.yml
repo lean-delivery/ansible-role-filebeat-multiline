@@ -9,7 +9,7 @@
       apt:
         name: apt-transport-https
         state: present
-        update_cache: True
+        update_cache: true
       register: debian_dependency
       until: debian_dependency is succeeded
 
@@ -24,7 +24,7 @@
       apt_repository:
         repo: '{{ es_apt_url }}'
         state: present
-        update_cache: True
+        update_cache: true
 
     - name: Debian - Installing Filebeat package
       apt:
@@ -37,4 +37,4 @@
       file:
         path: '{{ fb_service_path }}'
         state: directory
-  become: True
+  become: true

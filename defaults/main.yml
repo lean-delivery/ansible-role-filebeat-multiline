@@ -1,13 +1,13 @@
 ---
-elastic_branch: 6
+elastic_branch: 7
 filebeat_version: '{{ fb_major_version }}'
-filebeat_last_version: 6.6.0
+filebeat_last_version: 7.6.0
 elastic_gpg_key: https://artifacts.elastic.co/GPG-KEY-elasticsearch
 es_repo_file: 'elastic-{{ fb_major_version }}'
 es_apt_url: 'deb https://artifacts.elastic.co/packages/{{ es_repo_name }}/apt stable main'
 es_yum_url: 'https://artifacts.elastic.co/packages/{{ es_repo_name }}/yum'
-es_use_oss_version: False
-filebeat_ssl_enabled: False
+es_use_oss_version: false
+filebeat_ssl_enabled: false
 filebeat_node_name: '{{ inventory_hostname }}'
 
 win_awk_install_path: 'C:\program files\awk'
@@ -55,8 +55,8 @@ filebeat_inputs_name: prospectors
 filebeat_inputs_type: input_type
 
 filebeat_bulk_max_size: 500
-filebeat_logging_to_syslog: False
-filebeat_logging_to_files: True
+filebeat_logging_to_syslog: false
+filebeat_logging_to_files: true
 filebeat_rotateeverybytes: 104857600
 filebeat_keepfiles: 30
 # filebeat_worker: 1
