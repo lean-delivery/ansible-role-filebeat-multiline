@@ -1,30 +1,8 @@
 ---
-- name: Setting default values
-  set_fact:
-    path: '{{ path | combine(win.path) }}'
-    ssl: '{{ ssl | combine(win.ssl) }}'
-
-# - name: output beats version
-#   delegate_to: localhost
-#   uri:
-#     url: https://api.github.com/repos/elastic/beats/releases/latest
-#     method: GET
-#     return_content: true
-#     validate_certs: true
-#   register: github
-
-# - name: set github tag
-#   set_fact:
-#     gtag: '{{ github.content }}'
-
-# - name: set last filebeat version
-#   set_fact:
-#     filebeat_last_version: '{{ gtag.tag_name[1:] }}'
-
 - name: Set filebeat_specific_version if specified
   set_fact:
     filebeat_specific_version: '{{ filebeat_last_version }}'
-  when: filebeat_version_suffix == 'x'
+  when: filebeat_version.split('.')[1] == 'x'
 
 - name: Set filebeat_inputs_type
   set_fact:
@@ -68,28 +46,66 @@
     force: false
     remote_src: true
 
-- name: Download awk
-  win_copy:
-    src: '{{ role_path }}/files/awk.zip'
-    dest: '{{ win_download_path }}\awk.zip'
-    force: false
+- name: Install and configure awk
+  block:
+    - name: Download awk
+      win_copy:
+        src: '{{ role_path }}/files/awk.zip'
+        dest: '{{ win_download_path }}\awk.zip'
+        force: False
 
-- name: Unzip awk
-  win_unzip:
-    src: '{{ win_download_path }}\awk.zip'
-    dest: '{{ win_awk_install_path }}'
-    creates: '{{ win_awk_install_path }}'
+    - name: Unzip awk
+      win_unzip:
+        src: '{{ win_download_path }}\awk.zip'
+        dest: '{{ win_awk_install_path }}'
+        creates: '{{ win_awk_install_path }}'
 
-- name: Ensure that awk is in PATH
-  win_path:
-    elements:
-      - '{{ win_awk_install_path }}\bin'
-      - '{{ path.home }}'
-    state: present
+    - name: Ensure that awk is in PATH
+      win_path:
+        elements:
+          - '{{ win_awk_install_path }}\bin'
+          - '{{ path.home }}'
+        state: present
 
-- name: check awk
-  win_shell: 'awk --version'
-  changed_when: false
+    - name: check awk
+      win_shell: 'awk --version'
+      changed_when: False
+
+    - name: Creating directories for awk
+      win_file:
+        path: '{{ path.config }}\{{ config_dir }}'
+        state: directory
+      with_items:
+        - "awk.d"
+        - "parsers.d"
+        - "inputs.d"
+      loop_control:
+        loop_var: config_dir
+
+    - name: copy awk functions
+      win_copy:
+        src: '{{ role_path }}/files/awk.d/'
+        dest: '{{ path.config }}/awk.d'
+
+    - name: templating awk parsers
+      win_template:
+        src: '{{ parser_file }}'
+        dest: "{{ path.config }}\\parsers.d\\{{ parser_file | win_basename | regex_replace('.j2','') }}"
+      with_fileglob:
+        - ../templates/parsers.d/*.awk.j2
+      loop_control:
+        loop_var: parser_file
+
+    - name: List parsers
+      win_find:
+        paths: '{{ path.config }}/parsers.d/'
+        patterns: "*"
+      register: awk_files
+
+    - name: templating awk pipeline
+      win_template:
+        src: 'parsing-pipeline.awk.j2'
+        dest: '{{ path.config }}/parsing-pipeline.awk'
 
 - name: templating filebeat in/out configuration
   win_template:
@@ -100,42 +116,6 @@
     - 'out'
   loop_control:
     loop_var: conf
-
-- name: Creating directories for awk
-  win_file:
-    path: '{{ path.config }}\{{ config_dir }}'
-    state: directory
-  with_items:
-    - "awk.d"
-    - "parsers.d"
-    - "inputs.d"
-  loop_control:
-    loop_var: config_dir
-
-- name: copy awk functions
-  win_copy:
-    src: '{{ role_path }}/files/awk.d/'
-    dest: '{{ path.config }}/awk.d'
-
-- name: templating awk parsers
-  win_template:
-    src: '{{ parser_file }}'
-    dest: "{{ path.config }}\\parsers.d\\{{ parser_file | win_basename | regex_replace('.j2','') }}"
-  with_fileglob:
-    - ../templates/parsers.d/*.awk.j2
-  loop_control:
-    loop_var: parser_file
-
-- name: List parsers
-  win_find:
-    paths: '{{ path.config }}/parsers.d/'
-    patterns: "*"
-  register: awk_files
-
-- name: templating awk pipeline
-  win_template:
-    src: 'parsing-pipeline.awk.j2'
-    dest: '{{ path.config }}/parsing-pipeline.awk'
 
 - name: templating default input
   win_template:
@@ -154,7 +134,6 @@
     loop_var: fb_input
   when: filebeat_inputs is defined
 
-# Check this
 - name: Copy service file
   win_template:
     src: filebeat-template.bat.j2

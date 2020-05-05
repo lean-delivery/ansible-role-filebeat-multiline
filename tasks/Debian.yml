@@ -1,0 +1,40 @@
+---
+- name: Set Filebeat version if defined
+  set_fact:
+    fb_package_name: '{{ fb_package_name }}={{ filebeat_version }}'
+  when: filebeat_version.find('.x') == -1
+
+- block:
+    - name: Install dependency for Debian
+      apt:
+        name: apt-transport-https
+        state: present
+        update_cache: True
+      register: debian_dependency
+      until: debian_dependency is succeeded
+
+    - name: Debian - Importing latest logstash GPG Key
+      apt_key:
+        url: '{{ elastic_gpg_key }}'
+        state: present
+      register: add_gpg_key
+      until: add_gpg_key is succeeded
+
+    - name: Debian - Install elasticsearch repository
+      apt_repository:
+        repo: '{{ es_apt_url }}'
+        state: present
+        update_cache: True
+
+    - name: Debian - Installing Filebeat package
+      apt:
+        name: '{{ fb_package_name }}'
+        state: present
+      register: installed_package
+      until: installed_package is succeeded
+
+    - name: Debian - Create folder path for service script
+      file:
+        path: '{{ fb_service_path }}'
+        state: directory
+  become: True

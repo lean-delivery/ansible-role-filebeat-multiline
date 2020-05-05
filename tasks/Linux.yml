@@ -1,0 +1,140 @@
+---
+- name: Load a variable file based on the service manager
+  include_vars: '{{ service_manager }}'
+  with_first_found:
+    - '{{ ansible_service_mgr }}.yml'
+    - systemv.yml
+  loop_control:
+    loop_var: service_manager
+
+- name: Installing filebeat on current OS
+  include_tasks: '{{ platform_tasks }}'
+  with_first_found:
+    - '{{ ansible_os_family }}.yml'
+    - not-supported.yml
+  loop_control:
+    loop_var: platform_tasks
+
+- name: Update awk to 4.2.1 version
+  become: True
+  block:
+    - name: copy gawk
+      become: True
+      copy:
+        src: '{{ role_path }}/files/gawk'
+        dest: '/usr/local/bin/gawk'
+        backup: True
+        owner: root
+        group: root
+        mode: 0755
+
+    - name: update symlinks
+      become: True
+      file:
+        src: '/usr/local/bin/gawk'
+        dest: '/bin/awk'
+        state: link
+
+- name: Configure settings block
+  block:
+    - name: Setup path folders
+      file:
+        path: '{{ path_folder.value }}'
+        state: directory
+      with_dict: '{{ path }}'
+      loop_control:
+        loop_var: path_folder
+
+    - name: templating filebeat in/out configuration
+      template:
+        src: 'filebeat-{{ conf }}.yml.j2'
+        dest: '{{ path.config }}/filebeat-{{ conf }}.yml'
+        owner: root
+        group: root
+        mode: 0644
+      with_items:
+        - 'in'
+        - 'out'
+      loop_control:
+        loop_var: conf
+
+    - name: Creating directories for awk
+      file:
+        path: '{{ path.config }}/{{ config_dir }}'
+        state: directory
+        owner: root
+        group: root
+        mode: 0644
+      with_items:
+        - 'awk.d'
+        - 'parsers.d'
+        - 'inputs.d'
+      loop_control:
+        loop_var: config_dir
+
+    - name: copy awk functions
+      copy:
+        src: '{{ role_path }}/files/awk.d/'
+        dest: '{{ path.config }}/awk.d'
+        owner: root
+        group: root
+        mode: 0644
+
+    - name: templating awk parsers
+      template:
+        src: "{{ parser_file | regex_replace('.j2','') }}.j2"
+        dest: "{{ path.config }}/parsers.d/{{ parser_file | basename | regex_replace('.j2','') }}"
+        owner: root
+        group: root
+        mode: 0644
+        force: True
+      with_fileglob:
+        - ../templates/parsers.d/*.awk.j2
+      loop_control:
+        loop_var: parser_file
+
+    - name: List parsers
+      find:
+        paths: '{{ path.config }}/parsers.d/'
+        patterns: '*'
+      register: awk_files
+
+    - name: templating awk pipeline
+      template:
+        src: 'parsing-pipeline.awk.j2'
+        dest: '{{ path.config }}/parsing-pipeline.awk'
+        owner: root
+        group: root
+        mode: 0644
+
+    - name: templating default input
+      template:
+        src: 'input.yml.j2'
+        dest: '{{ path.config }}/inputs.d/input-{{ fb_input.name }}.yml'
+        owner: root
+        group: root
+        mode: 0644
+      with_items: '{{ filebeat.inputs }}'
+      loop_control:
+        loop_var: fb_input
+
+    - name: templating custom inputs
+      template:
+        src: 'input.yml.j2'
+        dest: '{{ path.config }}/inputs.d/input-{{ fb_input.name }}.yml'
+        owner: root
+        group: root
+        mode: 0644
+      with_items: '{{ filebeat_inputs }}'
+      loop_control:
+        loop_var: fb_input
+      when: filebeat_inputs is defined
+
+    - name: "Copy service configuration file"
+      template:
+        src: '{{ fb_service_script_template }}.j2'
+        dest: '{{ fb_service_path }}/{{ fb_service_script }}'
+        mode: '{{ fb_service_script_mode }}'
+        force: True
+      notify: '{{ fb_service_handlers }}'
+  become: True
